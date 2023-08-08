@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+
+<div class="jumbotron text-center">
+  <div class="container">
+    <i class="fas fa-key fa-6x"></i>
+
+
+    <% usersWithExperiences.forEach(function(user) { %>
+      <div class="user">
+        <h3><%= user.linkedInId %></h3>
+        <% user.experiences.forEach(function(experience) { %>
+          <div class="experience">
+            <h4><%= experience.title %></h4>
+            <p><%= experience.description %></p>
+            <!-- Display existing comments -->
+            <h5>Comments:</h5>
+            <ul>
+              <% experience.comments.forEach(function(comment) { %>
+                <li><strong><%= comment.author %></strong>: <%= comment.text %></li>
+              <% }) %>
+            </ul>
+            <!-- Form to add a new comment -->
+            <form action="/submitcomment" method="post">
+              <input type="hidden" name="userId" value="<%= user._id %>">
+              <input type="hidden" name="experienceIndex" value="<%= user.experiences.indexOf(experience) %>">
+              <div class="form-group">
+                <label for="commentText">Add Comment:</label>
+                <textarea class="form-control" id="commentText" name="commentText" rows="2" required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary">Submit Comment</button>
+            </form>
+          </div>
+        <% }) %>
+      </div>
+    <% }) %>
+
+
+
+    <hr>
+    <a class="btn btn-light btn-lg" href="/logout" role="button">Log Out</a>
+    <a class="btn btn-dark btn-lg" href="/submit" role="button">Submit a Secret</a>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
